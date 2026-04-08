@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GastosResidenciais.Api", "GastosResidenciais.Api\GastosResidenciais.Api.csproj", "{48A8F638-882E-43AA-9403-289872B6709C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GastosResidenciais.Business", "GastosResidenciais.Business\GastosResidenciais.Business.csproj", "{A20DBCB0-6A80-439D-9C5B-A051C1D236E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GastosResidenciais.Data", "GastosResidenciais.Data\GastosResidenciais.Data.csproj", "{FC0EC88F-56A6-40AE-A3BE-24C2C9ABD3E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GastosResidenciais.Model.Business", "GastosResidenciais.Model.Business\GastosResidenciais.Model.Business.csproj", "{4B64D8E9-AD4E-487E-8E58-88746E45DD55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GastosResidenciais.Model.Data", "GastosResidenciais.Model.Data\GastosResidenciais.Model.Data.csproj", "{6893C1AE-A1A1-4649-A37F-2C37BCD51BD3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48A8F638-882E-43AA-9403-289872B6709C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48A8F638-882E-43AA-9403-289872B6709C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48A8F638-882E-43AA-9403-289872B6709C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48A8F638-882E-43AA-9403-289872B6709C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A20DBCB0-6A80-439D-9C5B-A051C1D236E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A20DBCB0-6A80-439D-9C5B-A051C1D236E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A20DBCB0-6A80-439D-9C5B-A051C1D236E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A20DBCB0-6A80-439D-9C5B-A051C1D236E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC0EC88F-56A6-40AE-A3BE-24C2C9ABD3E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC0EC88F-56A6-40AE-A3BE-24C2C9ABD3E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC0EC88F-56A6-40AE-A3BE-24C2C9ABD3E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC0EC88F-56A6-40AE-A3BE-24C2C9ABD3E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B64D8E9-AD4E-487E-8E58-88746E45DD55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B64D8E9-AD4E-487E-8E58-88746E45DD55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B64D8E9-AD4E-487E-8E58-88746E45DD55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B64D8E9-AD4E-487E-8E58-88746E45DD55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6893C1AE-A1A1-4649-A37F-2C37BCD51BD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6893C1AE-A1A1-4649-A37F-2C37BCD51BD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6893C1AE-A1A1-4649-A37F-2C37BCD51BD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6893C1AE-A1A1-4649-A37F-2C37BCD51BD3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
