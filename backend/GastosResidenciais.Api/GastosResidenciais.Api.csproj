@@ -13,6 +13,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GastosResidenciais.Model.Business\GastosResidenciais.Model.Business.csproj" />
+    <ProjectReference Include="..\GastosResidenciais.Model.Data\GastosResidenciais.Model.Data.csproj" />
+    <ProjectReference Include="..\GastosResidenciais.Data\GastosResidenciais.Data.csproj" />
+    <ProjectReference Include="..\GastosResidenciais.Business\GastosResidenciais.Business.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

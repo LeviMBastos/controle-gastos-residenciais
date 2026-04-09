@@ -2543,39 +2543,32 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\cetd.lsa\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\levim\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Fontes\\controle-gastos-residenciais\\backend\\GastosResidenciais.Data\\GastosResidenciais.Data.csproj",
+      "projectUniqueName": "C:\\Users\\levim\\OneDrive\\Área de Trabalho\\Levi\\gastos_residenciais\\backend\\GastosResidenciais.Data\\GastosResidenciais.Data.csproj",
       "projectName": "GastosResidenciais.Data",
-      "projectPath": "C:\\Fontes\\controle-gastos-residenciais\\backend\\GastosResidenciais.Data\\GastosResidenciais.Data.csproj",
-      "packagesPath": "C:\\Users\\cetd.lsa\\.nuget\\packages\\",
-      "outputPath": "C:\\Fontes\\controle-gastos-residenciais\\backend\\GastosResidenciais.Data\\obj\\",
+      "projectPath": "C:\\Users\\levim\\OneDrive\\Área de Trabalho\\Levi\\gastos_residenciais\\backend\\GastosResidenciais.Data\\GastosResidenciais.Data.csproj",
+      "packagesPath": "C:\\Users\\levim\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\levim\\OneDrive\\Área de Trabalho\\Levi\\gastos_residenciais\\backend\\GastosResidenciais.Data\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\cetd.lsa\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\levim\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Fontes\\controle-gastos-residenciais\\backend\\GastosResidenciais.Model.Data\\GastosResidenciais.Model.Data.csproj": {
-              "projectPath": "C:\\Fontes\\controle-gastos-residenciais\\backend\\GastosResidenciais.Model.Data\\GastosResidenciais.Model.Data.csproj"
+            "C:\\Users\\levim\\OneDrive\\Área de Trabalho\\Levi\\gastos_residenciais\\backend\\GastosResidenciais.Model.Data\\GastosResidenciais.Model.Data.csproj": {
+              "projectPath": "C:\\Users\\levim\\OneDrive\\Área de Trabalho\\Levi\\gastos_residenciais\\backend\\GastosResidenciais.Model.Data\\GastosResidenciais.Model.Data.csproj"
             }
           }
         }
@@ -2589,8 +2582,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "10.0.100"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -2627,7 +2619,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.410/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

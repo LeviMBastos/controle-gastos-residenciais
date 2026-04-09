@@ -15,17 +15,22 @@ public class PessoaController : ControllerBase
         _pessoaBusiness = pessoaBusiness;
     }
 
-    [HttpPost]
-    public virtual async Task<IActionResult> Salvar(PessoaDto pessoa)
+    [HttpGet]
+    public virtual async Task<IActionResult> GetAll()
     {
-        try
-        {
-            await _pessoaBusiness.Salvar(pessoa);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, ex);
-        }
+        return Ok(await _pessoaBusiness.Pesquisar());
+    }
+
+    // [HttpGet("{id}")]
+    // public virtual async Task<IActionResult> Get(int id)
+    // {
+    //     return Response(await _pessoaBusiness.Pesquisar());
+    // }
+
+    [HttpPost]
+    public virtual async Task<IActionResult> Post(PessoaDto pessoa)
+    {
+        await _pessoaBusiness.Salvar(pessoa);
+        return Ok();
     }
 }

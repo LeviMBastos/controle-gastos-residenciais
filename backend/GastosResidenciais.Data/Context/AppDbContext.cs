@@ -10,5 +10,5 @@ public class AppDbContext : DbContext
     {
     }
 
-    public DbSet<PessoaEntity> Pessoas { get; set; }
+    public DbSet<Pessoa> Pessoas { get; set; }
 }

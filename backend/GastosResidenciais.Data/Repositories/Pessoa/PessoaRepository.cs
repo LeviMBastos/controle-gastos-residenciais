@@ -1,6 +1,7 @@
 using GastosResidenciais.Model.Data;
+using Microsoft.EntityFrameworkCore;
 
-namespace GastosResidenciais.Data.Repositories;
+namespace GastosResidenciais.Data;
 
 public class PessoaRepository : IPessoaRepository
 {
@@ -11,9 +12,14 @@ public class PessoaRepository : IPessoaRepository
         _context = context;
     }
 
-    public async Task Salvar(PessoaEntity pessoa)
+    public async Task<IList<Pessoa>> GetAll()
     {
-        await _context.Pessoas.AddAsync(pessoa);
+        return await _context.Pessoas.ToListAsync();
+    }
+
+    public async Task Add(Pessoa pessoa)
+    {
+        await _context.Pessoas.AddAsync(pessoa);  
         await _context.SaveChangesAsync();
     }
 }

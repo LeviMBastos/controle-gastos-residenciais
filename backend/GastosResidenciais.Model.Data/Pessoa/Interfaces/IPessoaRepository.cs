@@ -2,5 +2,6 @@ namespace GastosResidenciais.Model.Data;
 
 public interface IPessoaRepository
 {
-    Task Salvar(PessoaEntity pessoa);
+    Task<IList<Pessoa>> GetAll();
+    Task Add(Pessoa pessoa);
 }
