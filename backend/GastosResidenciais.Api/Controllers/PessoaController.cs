@@ -7,7 +7,6 @@ namespace GastosResidenciais.Api.Controllers;
 [Route("api/[controller]")]
 public class PessoaController : ControllerBase
 {
-
     private readonly IPessoaBusiness _pessoaBusiness;
 
     public PessoaController(IPessoaBusiness pessoaBusiness)

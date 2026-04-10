@@ -46,7 +46,7 @@ public class PessoaBusiness : IPessoaBusiness
 
     #region Map
 
-    private Pessoa Map(PessoaDto dto, int id = 0)
+    private static Pessoa Map(PessoaDto dto, int id = 0)
     {
         Pessoa pessoa = new Pessoa();
         pessoa.Id = id;
@@ -56,7 +56,7 @@ public class PessoaBusiness : IPessoaBusiness
         return pessoa;
     }
 
-    private PessoaPesquisaDto Map(Pessoa entidade)
+    private static PessoaPesquisaDto Map(Pessoa entidade)
     {
         PessoaPesquisaDto pessoa = new PessoaPesquisaDto();
         pessoa.Id = entidade.Id;

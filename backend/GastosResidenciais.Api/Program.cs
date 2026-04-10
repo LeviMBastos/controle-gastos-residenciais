@@ -3,6 +3,7 @@ using GastosResidenciais.Model.Data;
 using GastosResidenciais.Data;
 using GastosResidenciais.Business;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,11 +23,16 @@ builder.Services.AddCors(options =>
                         .AllowAnyHeader());
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+});
 
 builder.Services.AddScoped<IPessoaRepository, PessoaRepository>();
+builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 
 builder.Services.AddScoped<IPessoaBusiness, PessoaBusiness>();
+builder.Services.AddScoped<ICategoriaBusiness, CategoriaBusiness>();
 
 var app = builder.Build();
 
