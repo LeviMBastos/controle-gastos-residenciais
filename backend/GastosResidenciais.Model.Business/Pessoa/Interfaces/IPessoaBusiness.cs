@@ -6,4 +6,5 @@ public interface IPessoaBusiness
     Task<PessoaPesquisaDto?> PesquisarPorId(int id);
     Task Salvar(PessoaDto pessoa);
     Task Atualizar(int id, PessoaDto pessoa);
+    Task Deletar(int id);
 }

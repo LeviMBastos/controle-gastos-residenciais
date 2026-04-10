@@ -40,4 +40,11 @@ public class PessoaController : ControllerBase
         await _pessoaBusiness.Atualizar(id, pessoa);
         return Ok();
     }
+
+    [HttpDelete("{id}")]
+    public virtual async Task<IActionResult> Delete(int id)
+    {
+        await _pessoaBusiness.Deletar(id);
+        return Ok();
+    }
 }

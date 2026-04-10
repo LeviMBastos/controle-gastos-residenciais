@@ -36,6 +36,14 @@ public class PessoaBusiness : IPessoaBusiness
         await _pessoaRepository.Update(Map(pessoa, id));
     }
 
+    public async Task Deletar(int id)
+    {
+        Pessoa? pessoa = await _pessoaRepository.GetById(id);
+
+        if(pessoa != null)
+            await _pessoaRepository.Delete(pessoa);
+    }
+
     #region Map
 
     private Pessoa Map(PessoaDto dto, int id = 0)
