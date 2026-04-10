@@ -20,16 +20,28 @@ public class PessoaBusiness : IPessoaBusiness
         return pessoas.Select(pessoa => Map(pessoa)).ToList();
     }
 
+    public async Task<PessoaPesquisaDto?> PesquisarPorId(int id)
+    {
+        Pessoa? pessoa = await _pessoaRepository.GetById(id);
+        return pessoa != null ? Map(pessoa) : null;
+    }
+
     public async Task Salvar(PessoaDto pessoa)
     {
         await _pessoaRepository.Add(Map(pessoa));
     }
 
+    public async Task Atualizar(int id, PessoaDto pessoa)
+    {
+        await _pessoaRepository.Update(Map(pessoa, id));
+    }
+
     #region Map
 
-    private Pessoa Map(PessoaDto dto)
+    private Pessoa Map(PessoaDto dto, int id = 0)
     {
         Pessoa pessoa = new Pessoa();
+        pessoa.Id = id;
         pessoa.Nome = dto.Nome;
         pessoa.Idade = dto.Idade;
 

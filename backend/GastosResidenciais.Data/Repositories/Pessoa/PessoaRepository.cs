@@ -17,9 +17,26 @@ public class PessoaRepository : IPessoaRepository
         return await _context.Pessoas.ToListAsync();
     }
 
+    public async Task<Pessoa?> GetById(int id)
+    {
+        return await _context.Pessoas.FirstOrDefaultAsync(pessoa => pessoa.Id == id);
+    }
+
     public async Task Add(Pessoa pessoa)
     {
         await _context.Pessoas.AddAsync(pessoa);  
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task Update(Pessoa pessoa)
+    {
+        _context.Pessoas.Update(pessoa);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task Delete(Pessoa pessoa)
+    {
+        _context.Pessoas.Remove(pessoa);
         await _context.SaveChangesAsync();
     }
 }
