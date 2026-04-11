@@ -12,6 +12,11 @@ public class CategoriaRepository : ICategoriaRepository
         _context = context;
     }
 
+    public async Task<IList<Categoria>> GetAll()
+    {
+        return await _context.Categorias.ToListAsync();
+    }
+
     public async Task Add(Categoria categoria)
     {
         await _context.Categorias.AddAsync(categoria);

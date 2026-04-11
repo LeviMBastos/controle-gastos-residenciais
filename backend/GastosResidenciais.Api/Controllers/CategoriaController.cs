@@ -14,6 +14,12 @@ public class CategoriaController : ControllerBase
         _cargaBusiness = categoriaBusiness;
     }
 
+    [HttpGet]
+    public virtual async Task<IActionResult> GetAll()
+    {
+        return Ok(await _cargaBusiness.Pesquisar());
+    }
+
     [HttpPost]
     public virtual async Task<IActionResult> Post(CategoriaDto categoria)
     {
