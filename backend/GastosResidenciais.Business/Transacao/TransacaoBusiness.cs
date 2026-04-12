@@ -12,7 +12,6 @@ public class TransacaoBusiness : ITransacaoBusiness
     private readonly ITransacaoRepository _transacaoRepository;
     private readonly IPessoaRepository _pessoaRepository;
     private readonly ICategoriaRepository _categoriaRepository;
-    private const int IdadeMenorIdade = 18;
 
     public TransacaoBusiness(
         ITransacaoRepository transacaoRepository,
@@ -61,8 +60,8 @@ public class TransacaoBusiness : ITransacaoBusiness
         if (string.IsNullOrWhiteSpace(transacao.Descricao))
             throw new ArgumentException("Descrição é obrigatória.", nameof(transacao.Descricao));
 
-        if (transacao.Descricao.Length > 400)
-            throw new ArgumentException("Descrição deve ter no máximo 400 caracteres.", nameof(transacao.Descricao));
+        if (transacao.Descricao.Length > TransacaoConstantes.DescricaoComprimentoMaximo)
+            throw new ArgumentException($"Descrição deve ter no máximo {TransacaoConstantes.DescricaoComprimentoMaximo} caracteres.", nameof(transacao.Descricao));
 
         if (transacao.Valor <= 0)
             throw new ArgumentException("Valor deve ser maior que zero.", nameof(transacao.Valor));
@@ -82,7 +81,7 @@ public class TransacaoBusiness : ITransacaoBusiness
         if (pessoa == null)
             throw new ArgumentNullException(nameof(pessoa));
 
-        if (pessoa.Idade < IdadeMenorIdade && tipo != Tipo.Despesa)
+        if (pessoa.Idade < TransacaoConstantes.IdadeMenorIdade && tipo != Tipo.Despesa)
             throw new InvalidOperationException("Menores de idade só podem registrar despesas.");
     }
 

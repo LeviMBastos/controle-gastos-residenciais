@@ -10,8 +10,6 @@ namespace GastosResidenciais.Business;
 public class PessoaBusiness : IPessoaBusiness
 {
     private readonly IPessoaRepository _pessoaRepository;
-    private const int IdadeMinima = 0;
-    private const int IdadeMaxima = 150;
 
     public PessoaBusiness(IPessoaRepository pessoaRepository)
     {
@@ -82,11 +80,11 @@ public class PessoaBusiness : IPessoaBusiness
         if (string.IsNullOrWhiteSpace(pessoa.Nome))
             throw new ArgumentException("Nome é obrigatório.", nameof(pessoa.Nome));
 
-        if (pessoa.Nome.Length > 200)
-            throw new ArgumentException("Nome deve ter no máximo 200 caracteres.", nameof(pessoa.Nome));
+        if (pessoa.Nome.Length > PessoaConstantes.NomeComprimentoMaximo)
+            throw new ArgumentException($"Nome deve ter no máximo {PessoaConstantes.NomeComprimentoMaximo} caracteres.", nameof(pessoa.Nome));
 
-        if (pessoa.Idade < IdadeMinima || pessoa.Idade > IdadeMaxima)
-            throw new ArgumentException($"Idade deve estar entre {IdadeMinima} e {IdadeMaxima}.", nameof(pessoa.Idade));
+        if (pessoa.Idade < PessoaConstantes.IdadeMinima || pessoa.Idade > PessoaConstantes.IdadeMaxima)
+            throw new ArgumentException($"Idade deve estar entre {PessoaConstantes.IdadeMinima} e {PessoaConstantes.IdadeMaxima}.", nameof(pessoa.Idade));
     }
 
     #region Map

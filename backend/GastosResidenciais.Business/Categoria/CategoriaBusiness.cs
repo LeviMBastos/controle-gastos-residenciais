@@ -34,8 +34,8 @@ public class CategoriaBusiness : ICategoriaBusiness
         if (string.IsNullOrWhiteSpace(categoria.Descricao))
             throw new ArgumentException("Descrição é obrigatória.", nameof(categoria.Descricao));
 
-        if (categoria.Descricao.Length > 400)
-            throw new ArgumentException("Descrição deve ter no máximo 400 caracteres.", nameof(categoria.Descricao));
+        if (categoria.Descricao.Length > CategoriaConstantes.DescricaoComprimentoMaximo)
+            throw new ArgumentException($"Descrição deve ter no máximo {CategoriaConstantes.DescricaoComprimentoMaximo} caracteres.", nameof(categoria.Descricao));
 
         if (!Enum.IsDefined(typeof(Finalidade), categoria.Finalidade))
             throw new ArgumentException("Finalidade inválida.", nameof(categoria.Finalidade));
