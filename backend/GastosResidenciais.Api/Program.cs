@@ -30,9 +30,11 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 builder.Services.AddScoped<IPessoaRepository, PessoaRepository>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
 
 builder.Services.AddScoped<IPessoaBusiness, PessoaBusiness>();
 builder.Services.AddScoped<ICategoriaBusiness, CategoriaBusiness>();
+builder.Services.AddScoped<ITransacaoBusiness, TransacaoBusiness>();
 
 var app = builder.Build();
 

@@ -17,7 +17,7 @@ public class PessoaBusiness : IPessoaBusiness
     public async Task<IList<PessoaPesquisaDto>> Pesquisar()
     {
         IList<Pessoa> pessoas = await _pessoaRepository.GetAll();
-        return pessoas.Select(pessoa => Map(pessoa)).ToList();
+        return pessoas.Select(Map).ToList();
     }
 
     public async Task<PessoaPesquisaDto?> PesquisarPorId(int id)

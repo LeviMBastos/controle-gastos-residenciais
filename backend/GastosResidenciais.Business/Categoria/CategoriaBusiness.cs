@@ -15,7 +15,7 @@ public class CategoriaBusiness : ICategoriaBusiness
     public async Task<IList<CategoriaPesquisaDto>> Pesquisar()
     {
         IList<Categoria> categorias = await _cargaRepository.GetAll();
-        return categorias.Select(categoria => Map(categoria)).ToList();
+        return categorias.Select(Map).ToList();
     }
 
     public async Task Salvar(CategoriaDto categoria)
