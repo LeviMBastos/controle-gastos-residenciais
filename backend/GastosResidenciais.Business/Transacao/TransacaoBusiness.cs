@@ -12,6 +12,7 @@ public class TransacaoBusiness : ITransacaoBusiness
     private readonly ITransacaoRepository _transacaoRepository;
     private readonly IPessoaRepository _pessoaRepository;
     private readonly ICategoriaRepository _categoriaRepository;
+    private const int IdadeMenorIdade = 18;
 
     public TransacaoBusiness(
         ITransacaoRepository transacaoRepository,
@@ -26,14 +27,37 @@ public class TransacaoBusiness : ITransacaoBusiness
     public async Task<IList<TransacaoPesquisaDto>> Pesquisar()
     {
         IList<Transacao> transacoes = await _transacaoRepository.GetAll();
+
+        if (transacoes == null)
+            return new List<TransacaoPesquisaDto>();
+
         return transacoes.Select(Map).ToList();
     }
 
     public async Task Salvar(TransacaoDto transacao)
     {
         if (transacao == null)
-            throw new ArgumentNullException(nameof(transacao));
+            throw new ArgumentNullException(nameof(transacao), "Transação não pode ser nula.");
 
+        ValidarTransacaoDto(transacao);
+
+        Pessoa? pessoa = await _pessoaRepository.GetById(transacao.PessoaId);
+        if (pessoa == null)
+            throw new InvalidOperationException($"Pessoa com ID {transacao.PessoaId} não encontrada.");
+
+        ValidarIdadePessoa(pessoa, transacao.Tipo);
+
+        Categoria? categoria = await _categoriaRepository.GetById(transacao.CategoriaId);
+        if (categoria == null)
+            throw new InvalidOperationException($"Categoria com ID {transacao.CategoriaId} não encontrada.");
+
+        ValidarCategoriaCompativel(categoria, transacao.Tipo);
+
+        await _transacaoRepository.Add(Map(transacao));
+    }
+
+    private static void ValidarTransacaoDto(TransacaoDto transacao)
+    {
         if (string.IsNullOrWhiteSpace(transacao.Descricao))
             throw new ArgumentException("Descrição é obrigatória.", nameof(transacao.Descricao));
 
@@ -43,55 +67,72 @@ public class TransacaoBusiness : ITransacaoBusiness
         if (transacao.Valor <= 0)
             throw new ArgumentException("Valor deve ser maior que zero.", nameof(transacao.Valor));
 
-        Pessoa? pessoa = await _pessoaRepository.GetById(transacao.PessoaId);
+        if (!Enum.IsDefined(typeof(Tipo), transacao.Tipo))
+            throw new ArgumentException("Tipo de transação inválido.", nameof(transacao.Tipo));
+
+        if (transacao.CategoriaId <= 0)
+            throw new ArgumentException("ID de categoria deve ser maior que zero.", nameof(transacao.CategoriaId));
+
+        if (transacao.PessoaId <= 0)
+            throw new ArgumentException("ID de pessoa deve ser maior que zero.", nameof(transacao.PessoaId));
+    }
+
+    private static void ValidarIdadePessoa(Pessoa pessoa, Tipo tipo)
+    {
         if (pessoa == null)
-            throw new InvalidOperationException("Pessoa não encontrada.");
+            throw new ArgumentNullException(nameof(pessoa));
 
-        if (pessoa.Idade < 18 && transacao.Tipo != Tipo.Despesa)
+        if (pessoa.Idade < IdadeMenorIdade && tipo != Tipo.Despesa)
             throw new InvalidOperationException("Menores de idade só podem registrar despesas.");
+    }
 
-        Categoria? categoria = await _categoriaRepository.GetById(transacao.CategoriaId);
+    private static void ValidarCategoriaCompativel(Categoria categoria, Tipo tipo)
+    {
         if (categoria == null)
-            throw new InvalidOperationException("Categoria não encontrada.");
+            throw new ArgumentNullException(nameof(categoria));
 
-        if (categoria.Finalidade != Finalidade.Ambas && (transacao.Tipo == Tipo.Despesa && categoria.Finalidade != Finalidade.Despesa)
-            || (transacao.Tipo == Tipo.Receita && categoria.Finalidade != Finalidade.Receita))
-        {
-            throw new InvalidOperationException("Categoria incompatível com o tipo de transação.");
-        }
+        bool naoCompativel = (tipo == Tipo.Despesa && categoria.Finalidade != Finalidade.Despesa && categoria.Finalidade != Finalidade.Ambas)
+                          || (tipo == Tipo.Receita && categoria.Finalidade != Finalidade.Receita && categoria.Finalidade != Finalidade.Ambas);
 
-        await _transacaoRepository.Add(Map(transacao));
+        if (naoCompativel)
+            throw new InvalidOperationException($"Categoria com finalidade '{categoria.Finalidade}' é incompatível com transação do tipo '{tipo}'.");
     }
 
     #region Map
 
     private static Transacao Map(TransacaoDto dto)
     {
-        return new Transacao
-        {
-            Descricao = dto.Descricao,
-            Valor = dto.Valor,
-            Tipo = dto.Tipo,
-            CategoriaId = dto.CategoriaId,
-            PessoaId = dto.PessoaId
-        };
+        if (dto == null)
+            throw new ArgumentNullException(nameof(dto));
+
+        Transacao transacao = new Transacao();
+        transacao.Descricao = dto.Descricao ?? string.Empty;
+        transacao.Valor = dto.Valor;
+        transacao.Tipo = dto.Tipo;
+        transacao.CategoriaId = dto.CategoriaId;
+        transacao.PessoaId = dto.PessoaId;
+        
+        return transacao;
     }
 
     private static TransacaoPesquisaDto Map(Transacao entidade)
     {
-        return new TransacaoPesquisaDto
-        {
-            Id = entidade.Id,
-            Descricao = entidade.Descricao,
-            Valor = entidade.Valor,
-            Tipo = entidade.Tipo,
-            CategoriaId = entidade.CategoriaId,
-            CategoriaDescricao = entidade.Categoria?.Descricao ?? string.Empty,
-            CategoriaFinalidade = entidade.Categoria?.Finalidade ?? default,
-            PessoaId = entidade.PessoaId,
-            PessoaNome = entidade.Pessoa?.Nome ?? string.Empty,
-            PessoaIdade = entidade.Pessoa?.Idade ?? 0
-        };
+        if (entidade == null)
+            throw new ArgumentNullException(nameof(entidade));
+
+        TransacaoPesquisaDto transacaoPesquisa = new TransacaoPesquisaDto();
+        transacaoPesquisa.Id = entidade.Id;
+        transacaoPesquisa.Descricao = entidade.Descricao ?? string.Empty;
+        transacaoPesquisa.Valor = entidade.Valor;
+        transacaoPesquisa.Tipo = entidade.Tipo;
+        transacaoPesquisa.CategoriaId = entidade.CategoriaId;
+        transacaoPesquisa.CategoriaDescricao = entidade.Categoria?.Descricao ?? string.Empty;
+        transacaoPesquisa.CategoriaFinalidade = entidade.Categoria?.Finalidade ?? default;
+        transacaoPesquisa.PessoaId = entidade.PessoaId;
+        transacaoPesquisa.PessoaNome = entidade.Pessoa?.Nome ?? string.Empty;
+        transacaoPesquisa.PessoaIdade = entidade.Pessoa?.Idade ?? 0;
+
+        return transacaoPesquisa;
     }
 
     #endregion Map
