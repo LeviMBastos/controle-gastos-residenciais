@@ -7,11 +7,11 @@ namespace GastosResidenciais.Api.Controllers;
 [Route("api/[controller]")]
 public class CategoriaController : ControllerBase
 {
-    private readonly ICategoriaBusiness _cargaBusiness;
+    private readonly ICategoriaBusiness _categoriaBusiness;
 
     public CategoriaController(ICategoriaBusiness categoriaBusiness)
     {
-        _cargaBusiness = categoriaBusiness;
+        _categoriaBusiness = categoriaBusiness;
     }
 
     [HttpGet]
@@ -19,12 +19,12 @@ public class CategoriaController : ControllerBase
     {
         try
         {
-            IList<CategoriaPesquisaDto> resultado = await _cargaBusiness.Pesquisar();
+            IList<CategoriaPesquisaDto> resultado = await _categoriaBusiness.Pesquisar();
             return Ok(resultado);
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao listar categorias.", erro = ex.Message });
+            return BadRequest(new { mensagem = ex.Message });
         }
     }
 
@@ -33,20 +33,12 @@ public class CategoriaController : ControllerBase
     {
         try
         {
-            await _cargaBusiness.Salvar(categoria);
+            await _categoriaBusiness.Salvar(categoria);
             return Created(string.Empty, new { mensagem = "Categoria criada com sucesso." });
-        }
-        catch (ArgumentNullException ex)
-        {
-            return BadRequest(new { mensagem = ex.Message });
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { mensagem = ex.Message });
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao criar categoria.", erro = ex.Message });
+            return BadRequest(new { mensagem = ex.Message });
         }
     }
 }

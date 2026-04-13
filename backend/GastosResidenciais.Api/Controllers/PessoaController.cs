@@ -24,7 +24,7 @@ public class PessoaController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao listar pessoas.", erro = ex.Message });
+            return BadRequest(new { mensagem = ex.Message });
         }
     }
 
@@ -42,7 +42,7 @@ public class PessoaController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao buscar pessoa.", erro = ex.Message });
+            return BadRequest(new { mensagem = ex.Message });
         }
     }
 
@@ -56,7 +56,7 @@ public class PessoaController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao buscar totais de pessoas.", erro = ex.Message });
+            return BadRequest(new { mensagem = ex.Message });
         }
     }
 
@@ -68,17 +68,9 @@ public class PessoaController : ControllerBase
             await _pessoaBusiness.Salvar(pessoa);
             return Created(string.Empty, new { mensagem = "Pessoa criada com sucesso." });
         }
-        catch (ArgumentNullException ex)
-        {
-            return BadRequest(new { mensagem = ex.Message });
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { mensagem = ex.Message });
-        }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao criar pessoa.", erro = ex.Message });
+            return BadRequest(new { mensagem = ex.Message });
         }
     }
 
@@ -90,21 +82,13 @@ public class PessoaController : ControllerBase
             await _pessoaBusiness.Atualizar(id, pessoa);
             return Ok(new { mensagem = "Pessoa atualizada com sucesso." });
         }
-        catch (ArgumentNullException ex)
-        {
-            return BadRequest(new { mensagem = ex.Message });
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { mensagem = ex.Message });
-        }
         catch (InvalidOperationException ex)
         {
             return NotFound(new { mensagem = ex.Message });
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao atualizar pessoa.", erro = ex.Message });
+            return BadRequest(new { mensagem = ex.Message });
         }
     }
 
@@ -116,17 +100,13 @@ public class PessoaController : ControllerBase
             await _pessoaBusiness.Deletar(id);
             return Ok(new { mensagem = "Pessoa deletada com sucesso." });
         }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { mensagem = ex.Message });
-        }
         catch (InvalidOperationException ex)
         {
             return NotFound(new { mensagem = ex.Message });
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao deletar pessoa.", erro = ex.Message });
+            return BadRequest(new { mensagem = ex.Message });
         }
     }
 }
