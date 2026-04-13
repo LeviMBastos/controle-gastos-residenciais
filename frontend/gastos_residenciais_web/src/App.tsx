@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PessoasPage } from "./pages";
+import { PessoasPage, CategoriaPage } from "./pages";
 import "./App.css";
 
 type PaginaAtiva = "inicio" | "pessoas" | "categorias" | "transacoes";
@@ -12,7 +12,7 @@ function App() {
       case "pessoas":
         return <PessoasPage />;
       case "categorias":
-        return <></>;
+        return <CategoriaPage />;
       case "transacoes":
         return <></>;
       default:
