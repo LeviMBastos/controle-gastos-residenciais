@@ -35,6 +35,42 @@ public class PessoaBusiness : IPessoaBusiness
         return pessoa != null ? Map(pessoa) : null;
     }
 
+    public async Task<PessoaConsultaTotalDto> PesquisarComTotais()
+    {
+        IList<Pessoa> pessoas = await _pessoaRepository.GetAllComTransacoes();
+
+        if (pessoas == null || pessoas.Count == 0)
+            return new PessoaConsultaTotalDto();
+
+        PessoaConsultaTotalDto retorno = new PessoaConsultaTotalDto
+        {
+            Pessoas = new List<PessoaConsultaTotalIndividualDto>(),
+            TotalGeral = new TotalGeralDto()
+        };
+
+        foreach (Pessoa pessoa in pessoas)
+        {
+            decimal totalReceitas = pessoa.Transacoes?
+                                          .Where(tran => tran.Tipo == Tipo.Receita)
+                                          .Sum(tran => tran.Valor) ?? 0;
+
+            decimal totalDespesas = pessoa.Transacoes?
+                                          .Where(tran => tran.Tipo == Tipo.Despesa)
+                                          .Sum(tran => tran.Valor) ?? 0;
+
+            decimal saldo = totalReceitas - totalDespesas;
+
+            retorno.Pessoas.Add(Map(pessoa.Nome, totalReceitas, totalDespesas, saldo));
+
+            retorno.TotalGeral.TotalReceitasGeral += totalReceitas;
+            retorno.TotalGeral.TotalDespesasGeral += totalDespesas;
+        }
+
+        retorno.TotalGeral.SaldoLiquido = retorno.TotalGeral.TotalReceitasGeral - retorno.TotalGeral.TotalDespesasGeral;
+
+        return retorno;
+    }
+
     public async Task Salvar(PessoaDto pessoa)
     {
         if (pessoa == null)
@@ -113,6 +149,17 @@ public class PessoaBusiness : IPessoaBusiness
         pessoaPesquisa.Idade = entidade.Idade;
 
         return pessoaPesquisa;
+    }
+
+    private static PessoaConsultaTotalIndividualDto Map(string nome, decimal totalReceitas, decimal totalDespesas, decimal saldo)
+    {
+        PessoaConsultaTotalIndividualDto pessoaConsulta = new PessoaConsultaTotalIndividualDto();
+        pessoaConsulta.Nome = nome ?? string.Empty;
+        pessoaConsulta.TotalReceitas = totalReceitas;
+        pessoaConsulta.TotalDespesas = totalDespesas;
+        pessoaConsulta.Saldo = saldo;
+
+        return pessoaConsulta;
     }
 
     #endregion Map

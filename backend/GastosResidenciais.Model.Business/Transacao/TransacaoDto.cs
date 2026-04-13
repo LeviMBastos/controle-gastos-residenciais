@@ -7,7 +7,7 @@ public class TransacaoDto
 {
     [Required]
     [MaxLength(400)]
-    public string Descricao { get; set; } = null!;
+    public string? Descricao { get; set; }
 
     [Range(0.01, double.MaxValue)]
     public decimal Valor { get; set; }

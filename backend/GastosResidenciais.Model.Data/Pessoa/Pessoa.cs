@@ -8,6 +8,8 @@ public class Pessoa
     
     [Required]
     [MaxLength(200)]
-    public string Nome { get; set; }
+    public string Nome { get; set; } = null!;
     public int Idade { get; set; }
+    
+    public ICollection<Transacao> Transacoes { get; set; } = new List<Transacao>();
 }

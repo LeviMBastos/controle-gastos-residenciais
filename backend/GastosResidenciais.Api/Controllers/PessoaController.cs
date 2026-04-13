@@ -26,6 +26,20 @@ public class PessoaController : ControllerBase
         return Ok(await _pessoaBusiness.PesquisarPorId(id));
     }
 
+    [HttpGet("TotaisTransacoes")]
+    public virtual async Task<IActionResult> GetTotais()
+    {
+        try
+        {
+            PessoaConsultaTotalDto resultado = await _pessoaBusiness.PesquisarComTotais();
+            return Ok(resultado);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao buscar totais de pessoas.", erro = ex.Message });
+        }
+    }
+
     [HttpPost]
     public virtual async Task<IActionResult> Post(PessoaDto pessoa)
     {
