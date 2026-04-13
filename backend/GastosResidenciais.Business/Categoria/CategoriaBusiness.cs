@@ -26,6 +26,42 @@ public class CategoriaBusiness : ICategoriaBusiness
         return categorias.Select(Map).ToList();
     }
 
+    public async Task<CategoriaConsultaTotalDto> PesquisarComTotais()
+    {
+        IList<Categoria> categorias = await _categoriaRepository.GetAllComTransacoes();
+
+        if (categorias == null || categorias.Count == 0)
+            return new CategoriaConsultaTotalDto();
+
+        CategoriaConsultaTotalDto retorno = new CategoriaConsultaTotalDto
+        {
+            Categorias = new List<CategoriaConsultaTotalIndividualDto>(),
+            TotalGeral = new TotalGeralDto()
+        };
+
+        foreach (Categoria categoria in categorias)
+        {
+            decimal totalReceitas = categoria.Transacoes?
+                                          .Where(tran => tran.Tipo == Tipo.Receita)
+                                          .Sum(tran => tran.Valor) ?? 0;
+
+            decimal totalDespesas = categoria.Transacoes?
+                                          .Where(tran => tran.Tipo == Tipo.Despesa)
+                                          .Sum(tran => tran.Valor) ?? 0;
+
+            decimal saldo = totalReceitas - totalDespesas;
+
+            retorno.Categorias.Add(Map(categoria, totalReceitas, totalDespesas, saldo));
+
+            retorno.TotalGeral.TotalReceitasGeral += totalReceitas;
+            retorno.TotalGeral.TotalDespesasGeral += totalDespesas;
+        }
+
+        retorno.TotalGeral.SaldoLiquido = retorno.TotalGeral.TotalReceitasGeral - retorno.TotalGeral.TotalDespesasGeral;
+
+        return retorno;
+    }
+
     public async Task Salvar(CategoriaDto categoria)
     {
         if (categoria == null)
@@ -68,6 +104,21 @@ public class CategoriaBusiness : ICategoriaBusiness
         categoriaPesquisa.Finalidade = entidade.Finalidade;
 
         return categoriaPesquisa;
+    }
+
+    private static CategoriaConsultaTotalIndividualDto Map(Categoria entidade, decimal totalReceitas, decimal totalDespesas, decimal saldo)
+    {
+        if (entidade == null)
+            throw new ArgumentNullException(nameof(entidade));
+
+        CategoriaConsultaTotalIndividualDto categoria = new CategoriaConsultaTotalIndividualDto();
+        categoria.Descricao = entidade.Descricao ?? string.Empty;
+        categoria.Finalidade = entidade.Finalidade;
+        categoria.TotalReceitas = totalReceitas;
+        categoria.TotalDespesas = totalDespesas;
+        categoria.Saldo = saldo;
+
+        return categoria;
     }
 
     #endregion Map

@@ -7,5 +7,6 @@ public interface ICategoriaRepository
 {
    Task Add(Categoria categoria);
    Task<IList<Categoria>> GetAll();
+   Task<IList<Categoria>> GetAllComTransacoes();
    Task<Categoria?> GetById(int id);
 }

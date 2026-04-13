@@ -4,4 +4,5 @@ public interface ICategoriaBusiness
 {
     Task Salvar(CategoriaDto categoria);
     Task<IList<CategoriaPesquisaDto>> Pesquisar();
+    Task<CategoriaConsultaTotalDto> PesquisarComTotais();
 }

@@ -20,7 +20,7 @@ public class PessoaRepository : IPessoaRepository
     public async Task<IList<Pessoa>> GetAllComTransacoes()
     {
         return await _context.Pessoas
-            .Include(p => p.Transacoes)
+            .Include(pessoa => pessoa.Transacoes)
             .ToListAsync();
     }
 

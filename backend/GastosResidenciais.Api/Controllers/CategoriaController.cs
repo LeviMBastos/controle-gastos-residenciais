@@ -28,6 +28,20 @@ public class CategoriaController : ControllerBase
         }
     }
 
+    [HttpGet("TotaisTransacoes")]
+    public virtual async Task<IActionResult> GetTotais()
+    {
+        try
+        {
+            CategoriaConsultaTotalDto resultado = await _categoriaBusiness.PesquisarComTotais();
+            return Ok(resultado);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+    }
+
     [HttpPost]
     public virtual async Task<IActionResult> Post(CategoriaDto categoria)
     {

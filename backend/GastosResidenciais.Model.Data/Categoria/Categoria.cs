@@ -8,6 +8,7 @@ public class Categoria
     
     [Required]
     [MaxLength(400)]
-    public string Descricao { get; set; }
+    public string? Descricao { get; set; }
     public Finalidade Finalidade { get; set; }
+    public IList<Transacao>? Transacoes { get; set; }
 }

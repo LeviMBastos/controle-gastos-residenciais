@@ -19,6 +19,13 @@ public class CategoriaRepository : ICategoriaRepository
         return await _context.Categorias.ToListAsync();
     }
 
+    public async Task<IList<Categoria>> GetAllComTransacoes()
+    {
+        return await _context.Categorias
+            .Include(c => c.Transacoes)
+            .ToListAsync();
+    }
+
     public async Task<Categoria?> GetById(int id)
     {
         return await _context.Categorias.FirstOrDefaultAsync(categoria => categoria.Id == id);

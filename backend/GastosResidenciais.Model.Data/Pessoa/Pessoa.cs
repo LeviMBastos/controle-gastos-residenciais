@@ -11,5 +11,5 @@ public class Pessoa
     public string Nome { get; set; } = null!;
     public int Idade { get; set; }
     
-    public ICollection<Transacao> Transacoes { get; set; } = new List<Transacao>();
+    public IList<Transacao>? Transacoes { get; set; }
 }
