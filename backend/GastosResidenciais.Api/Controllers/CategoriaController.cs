@@ -17,14 +17,36 @@ public class CategoriaController : ControllerBase
     [HttpGet]
     public virtual async Task<IActionResult> GetAll()
     {
-        return Ok(await _cargaBusiness.Pesquisar());
+        try
+        {
+            IList<CategoriaPesquisaDto> resultado = await _cargaBusiness.Pesquisar();
+            return Ok(resultado);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao listar categorias.", erro = ex.Message });
+        }
     }
 
     [HttpPost]
     public virtual async Task<IActionResult> Post(CategoriaDto categoria)
     {
-        Console.WriteLine(categoria.Finalidade);
-        await _cargaBusiness.Salvar(categoria);
-        return Ok();
+        try
+        {
+            await _cargaBusiness.Salvar(categoria);
+            return Created(string.Empty, new { mensagem = "Categoria criada com sucesso." });
+        }
+        catch (ArgumentNullException ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao criar categoria.", erro = ex.Message });
+        }
     }
 }

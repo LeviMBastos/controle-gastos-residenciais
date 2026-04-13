@@ -17,13 +17,40 @@ public class TransacaoController : ControllerBase
     [HttpGet]
     public virtual async Task<IActionResult> GetAll()
     {
-        return Ok(await _transacaoBusiness.Pesquisar());
+        try
+        {
+            IList<TransacaoPesquisaDto> resultado = await _transacaoBusiness.Pesquisar();
+            return Ok(resultado);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao listar transações.", erro = ex.Message });
+        }
     }
 
     [HttpPost]
     public virtual async Task<IActionResult> Post(TransacaoDto transacao)
     {
-        await _transacaoBusiness.Salvar(transacao);
-        return Ok();
+        try
+        {
+            await _transacaoBusiness.Salvar(transacao);
+            return Created(string.Empty, new { mensagem = "Transação criada com sucesso." });
+        }
+        catch (ArgumentNullException ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao criar transação.", erro = ex.Message });
+        }
     }
 }

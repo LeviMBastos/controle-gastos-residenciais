@@ -17,13 +17,33 @@ public class PessoaController : ControllerBase
     [HttpGet]
     public virtual async Task<IActionResult> GetAll()
     {
-        return Ok(await _pessoaBusiness.Pesquisar());
+        try
+        {
+            IList<PessoaPesquisaDto> resultado = await _pessoaBusiness.Pesquisar();
+            return Ok(resultado);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao listar pessoas.", erro = ex.Message });
+        }
     }
 
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> GetById(int id)
     {
-        return Ok(await _pessoaBusiness.PesquisarPorId(id));
+        try
+        {
+            PessoaPesquisaDto? resultado = await _pessoaBusiness.PesquisarPorId(id);
+            
+            if (resultado == null)
+                return NotFound(new { mensagem = $"Pessoa com ID {id} não encontrada." });
+
+            return Ok(resultado);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao buscar pessoa.", erro = ex.Message });
+        }
     }
 
     [HttpGet("TotaisTransacoes")]
@@ -43,21 +63,70 @@ public class PessoaController : ControllerBase
     [HttpPost]
     public virtual async Task<IActionResult> Post(PessoaDto pessoa)
     {
-        await _pessoaBusiness.Salvar(pessoa);
-        return Ok();
+        try
+        {
+            await _pessoaBusiness.Salvar(pessoa);
+            return Created(string.Empty, new { mensagem = "Pessoa criada com sucesso." });
+        }
+        catch (ArgumentNullException ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao criar pessoa.", erro = ex.Message });
+        }
     }
 
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Put(int id, PessoaDto pessoa)
     {
-        await _pessoaBusiness.Atualizar(id, pessoa);
-        return Ok();
+        try
+        {
+            await _pessoaBusiness.Atualizar(id, pessoa);
+            return Ok(new { mensagem = "Pessoa atualizada com sucesso." });
+        }
+        catch (ArgumentNullException ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(new { mensagem = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao atualizar pessoa.", erro = ex.Message });
+        }
     }
 
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> Delete(int id)
     {
-        await _pessoaBusiness.Deletar(id);
-        return Ok();
+        try
+        {
+            await _pessoaBusiness.Deletar(id);
+            return Ok(new { mensagem = "Pessoa deletada com sucesso." });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(new { mensagem = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao deletar pessoa.", erro = ex.Message });
+        }
     }
 }
