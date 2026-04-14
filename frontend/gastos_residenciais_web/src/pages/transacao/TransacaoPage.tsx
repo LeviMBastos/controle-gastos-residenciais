@@ -8,7 +8,7 @@ export const TransacaoPage = () => {
     transacoes,
     loading,
     error,
-    handleCreateOrUpdate,
+    handleCreate,
     setError,
   } = usePageTransacao();
 
@@ -27,7 +27,7 @@ export const TransacaoPage = () => {
         )}
 
         <TransacaoForm
-          onSubmit={handleCreateOrUpdate}
+          onSubmit={handleCreate}
           loading={loading}
           initialData={undefined}
         />

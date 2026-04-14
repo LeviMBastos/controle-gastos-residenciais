@@ -8,7 +8,7 @@ export const CategoriaPage = () => {
     categorias,
     loading,
     error,
-    handleCreateOrUpdate,
+    handleCreate,
     setError,
   } = usePageCategoria();
 
@@ -27,7 +27,7 @@ export const CategoriaPage = () => {
         )}
 
         <CategoriaForm
-          onSubmit={handleCreateOrUpdate}
+          onSubmit={handleCreate}
           loading={loading}
           initialData={undefined}
         />
