@@ -1,6 +1,6 @@
 import type { CategoriaPesquisaDto } from "../../types";
 import { Tabela } from "../../components/common";
-import type { Coluna, AcaoTabela } from "../../components/common";
+import type { Coluna } from "../../components/common";
 import { Finalidade } from "../../types/enums";
 import "../../App.css";
 
