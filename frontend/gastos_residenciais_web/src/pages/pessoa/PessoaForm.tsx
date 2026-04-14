@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import type { PessoaDto } from "../../types";
+import { useFormPessoa } from "../../hooks";
 import "../../App.css";
 
 interface PessoaFormProps {
@@ -13,71 +13,11 @@ export const PessoaForm = ({
   loading = false,
   initialData,
 }: PessoaFormProps) => {
-  const [formData, setFormData] = useState<PessoaDto>(
-    initialData || {
-      nome: "",
-      idade: 0,
-    },
-  );
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    if (initialData) {
-      setFormData(initialData);
-      setErrors({});
-    } else {
-      setFormData({
-        nome: "",
-        idade: 0,
-      });
-      setErrors({});
-    }
-  }, [initialData]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "idade" ? parseInt(value) || 0 : value,
-    }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const validateForm = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.nome || formData.nome.trim().length === 0) {
-      newErrors.nome = "Nome é obrigatório";
-    } else if (formData.nome.length > 200) {
-      newErrors.nome = "Nome deve ter no máximo 200 caracteres";
-    }
-
-    if (formData.idade < 0 || formData.idade > 150) {
-      newErrors.idade = "Idade deve estar entre 0 e 150";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    try {
-      await onSubmit(formData);
-      setFormData({ nome: "", idade: 0 });
-      setErrors({});
-    } catch (error) {
-      setErrors({ submit: "Erro ao salvar pessoa" });
-    }
-  };
+  const { formData, errors, handleChange, handleSubmit } =
+    useFormPessoa(initialData);
 
   return (
-    <form onSubmit={handleSubmit} className="box">
+    <form onSubmit={(e) => handleSubmit(e, onSubmit)} className="box">
       <h2 className="section-title">
         {initialData ? "Editar Pessoa" : "Cadastrar Nova Pessoa"}
       </h2>

@@ -1,9 +1,6 @@
-import { useState, useEffect } from "react";
-import type { TransacaoDto, PessoaPesquisaDto, CategoriaPesquisaDto } from "../../types";
+import type { TransacaoDto } from "../../types";
 import { Tipo } from "../../types/enums";
-import { pessoaService } from "../../services/pessoa";
-import { categoriaService } from "../../services/categoria";
-import { formatarMoeda, processarValorDinheiro } from "../../utils/formatters";
+import { useFormTransacao } from "../../hooks";
 import "../../App.css";
 
 interface TransacaoFormProps {
@@ -17,143 +14,19 @@ export const TransacaoForm = ({
   loading = false,
   initialData,
 }: TransacaoFormProps) => {
-  const [formData, setFormData] = useState<TransacaoDto>(
-    initialData || {
-      descricao: "",
-      valor: 0,
-      tipo: Tipo.Despesa,
-      categoriaId: 0,
-      pessoaId: 0,
-    }
-  );
-  const [valorDisplay, setValorDisplay] = useState<string>(
-    initialData ? formatarMoeda(initialData.valor) : ""
-  );
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [pessoas, setPessoas] = useState<PessoaPesquisaDto[]>([]);
-  const [categorias, setCategorias] = useState<CategoriaPesquisaDto[]>([]);
-  const [loadingData, setLoadingData] = useState(true);
-
-  useEffect(() => {
-    const carregarDados = async () => {
-      try {
-        const [pessoasData, categoriasData] = await Promise.all([
-          pessoaService.listar(),
-          categoriaService.listar(),
-        ]);
-        setPessoas(pessoasData);
-        setCategorias(categoriasData);
-      } catch (error) {
-        console.error("Erro ao carregar pessoas e categorias", error);
-      } finally {
-        setLoadingData(false);
-      }
-    };
-
-    carregarDados();
-  }, []);
-
-  useEffect(() => {
-    if (initialData) {
-      setFormData(initialData);
-      setValorDisplay(formatarMoeda(initialData.valor));
-      setErrors({});
-    } else {
-      setFormData({
-        descricao: "",
-        valor: 0,
-        tipo: Tipo.Despesa,
-        categoriaId: 0,
-        pessoaId: 0,
-      });
-      setValorDisplay("");
-      setErrors({});
-    }
-  }, [initialData]);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    
-    if (name === "valor") {
-      const valorNumerico = processarValorDinheiro(value);
-      setFormData((prev) => ({
-        ...prev,
-        valor: valorNumerico,
-      }));
-      setValorDisplay(value);
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]:
-          name === "tipo" || name === "categoriaId" || name === "pessoaId"
-            ? parseInt(value) || 0
-            : value,
-      }));
-    }
-    
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const validateForm = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.descricao || formData.descricao.trim().length === 0) {
-      newErrors.descricao = "Descrição é obrigatória";
-    } else if (formData.descricao.length > 400) {
-      newErrors.descricao = "Descrição deve ter no máximo 400 caracteres";
-    }
-
-    if (formData.valor <= 0) {
-      newErrors.valor = "Valor deve ser maior que zero";
-    }
-
-    if (!formData.tipo || (formData.tipo !== Tipo.Despesa && formData.tipo !== Tipo.Receita)) {
-      newErrors.tipo = "Tipo é obrigatório";
-    }
-
-    if (!formData.categoriaId || formData.categoriaId === 0) {
-      newErrors.categoriaId = "Categoria é obrigatória";
-    }
-
-    if (!formData.pessoaId || formData.pessoaId === 0) {
-      newErrors.pessoaId = "Pessoa é obrigatória";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    try {
-      await onSubmit(formData);
-      setFormData({
-        descricao: "",
-        valor: 0,
-        tipo: Tipo.Despesa,
-        categoriaId: 0,
-        pessoaId: 0,
-      });
-      setValorDisplay("");
-      setErrors({});
-    } catch (error) {
-      setErrors({ submit: "Erro ao salvar transação" });
-    }
-  };
-
-  if (loadingData) {
-    return <div className="box">Carregando dados...</div>;
-  }
+  const {
+    formData,
+    valorDisplay,
+    errors,
+    pessoas,
+    categorias,
+    handleChange,
+    handleBlurValor,
+    handleSubmit,
+  } = useFormTransacao(initialData);
 
   return (
-    <form onSubmit={handleSubmit} className="box">
+    <form onSubmit={(e) => handleSubmit(e, onSubmit)} className="box">
       <h2 className="section-title">Registrar Nova Transação</h2>
 
       {errors.submit && (
@@ -181,13 +54,7 @@ export const TransacaoForm = ({
           name="valor"
           value={valorDisplay}
           onChange={handleChange}
-          onBlur={() => {
-            if (formData.valor > 0) {
-              setValorDisplay(formatarMoeda(formData.valor));
-            } else {
-              setValorDisplay("");
-            }
-          }}
+          onBlur={handleBlurValor}
           disabled={loading}
           className="input"
           placeholder="R$ 0,00"

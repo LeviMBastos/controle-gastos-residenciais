@@ -1,56 +1,16 @@
-import { useState, useEffect } from "react";
-import type { CategoriaDto, CategoriaPesquisaDto } from "../../types";
-import { categoriaService } from "../../services/categoria";
+import { usePageCategoria } from "../../hooks";
 import { CategoriaForm } from "./CategoriaForm";
 import { CategoriaList } from "./CategoriaList";
 import "../../App.css";
 
 export const CategoriaPage = () => {
-  const [categorias, setCategorias] = useState<CategoriaPesquisaDto[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [editingData, setEditingData] = useState<CategoriaDto | null>(null);
-
-  const carregarCategorias = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await categoriaService.listar();
-      setCategorias(data);
-    } catch (err: any) {
-      setError(
-        err.response?.data?.mensagem || "Erro ao carregar categorias"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    carregarCategorias();
-  }, []);
-
-  const handleCreateOrUpdate = async (categoria: CategoriaDto) => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      if (editingId) {
-        await categoriaService.atualizar(editingId, categoria);
-        setEditingId(null);
-        setEditingData(null);
-      } else {
-        await categoriaService.criar(categoria);
-      }
-
-      await carregarCategorias();
-    } catch (err: any) {
-      setError(err.response?.data?.mensagem || "Erro ao salvar categoria");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    categorias,
+    loading,
+    error,
+    handleCreateOrUpdate,
+    setError,
+  } = usePageCategoria();
 
   return (
     <div className="page">
@@ -69,7 +29,7 @@ export const CategoriaPage = () => {
         <CategoriaForm
           onSubmit={handleCreateOrUpdate}
           loading={loading}
-          initialData={editingData || undefined}
+          initialData={undefined}
         />
 
         <h2 className="section-title">Categorias Cadastradas</h2>

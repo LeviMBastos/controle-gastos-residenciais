@@ -6,12 +6,9 @@ export const formatarMoeda = (valor: number): string => {
 };
 
 export const processarValorDinheiro = (input: string): number => {
-  // Remove caracteres especiais, mantendo apenas dígitos e vírgula/ponto
   const limpo = input.replace(/\D/g, "");
-  
   if (!limpo) return 0;
   
-  // Converte para número (últimos 2 dígitos são centavos)
   return parseInt(limpo) / 100;
 };
 

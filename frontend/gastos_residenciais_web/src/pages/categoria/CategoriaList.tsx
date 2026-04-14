@@ -6,8 +6,6 @@ import "../../App.css";
 
 interface PropsListaCategoria {
   categorias: CategoriaPesquisaDto[];
-  onEdit?: (categoria: CategoriaPesquisaDto) => void;
-  onDelete?: (id: number) => Promise<void>;
   carregando?: boolean;
 }
 

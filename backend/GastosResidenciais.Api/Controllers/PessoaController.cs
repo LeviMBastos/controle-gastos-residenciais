@@ -100,13 +100,9 @@ public class PessoaController : ControllerBase
             await _pessoaBusiness.Deletar(id);
             return Ok(new { mensagem = "Pessoa deletada com sucesso." });
         }
-        catch (InvalidOperationException ex) when (ex.Message.Contains("não encontrada"))
-        {
-            return NotFound(new { mensagem = ex.Message });
-        }
         catch (InvalidOperationException ex)
         {
-            return BadRequest(new { mensagem = ex.Message });
+            return NotFound(new { mensagem = ex.Message });
         }
         catch (Exception ex)
         {
