@@ -75,7 +75,6 @@ body {
   width: 100%;
 }
 
-/* Página */
 .page {
   min-height: 100vh;
   padding: 24px;
@@ -86,7 +85,6 @@ body {
   margin: 0 auto;
 }
 
-/* Títulos */
 .page-title {
   font-size: 2rem;
   font-weight: 600;
@@ -101,7 +99,6 @@ body {
   color: #1f2937;
 }
 
-/* Card padrão (igual menu, reaproveitamento) */
 .box {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -110,7 +107,6 @@ body {
   margin-bottom: 16px;
 }
 
-/* Form */
 .input-group {
   display: flex;
   flex-direction: column;
@@ -134,7 +130,6 @@ body {
   background-color: #f3f4f6;
 }
 
-/* Botão */
 .button {
   background-color: #111827;
   color: white;
@@ -161,7 +156,6 @@ body {
   font-size: 0.95rem;
 }
 
-/* Alertas */
 .alert {
   padding: 12px;
   border-radius: 8px;
@@ -181,7 +175,6 @@ body {
   border: 1px solid #bfdbfe;
 }
 
-/* Tabela */
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -208,7 +201,6 @@ body {
   margin-right: 8px;
 }
 
-/* Tabela */
 .table-container {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -245,12 +237,10 @@ body {
   border-bottom: 1px solid #f3f4f6;
 }
 
-/* Zebra leve */
 .table tbody tr:nth-child(even) {
   background-color: #fafafa;
 }
 
-/* Botões de ação (neutros) */
 .button-sm {
   padding: 6px 10px;
   font-size: 0.8rem;
@@ -265,7 +255,6 @@ body {
   cursor: not-allowed;
 }
 
-/* Variações sutis */
 .button-primary {
   border-color: #9ca3af;
 }
@@ -282,7 +271,6 @@ body {
   border-color: #86efac;
 }
 
-/* Empty state */
 .empty-state {
   text-align: center;
   padding: 40px;
@@ -292,7 +280,6 @@ body {
   color: #6b7280;
 }
 
-/* ===== APP CONTAINER E LAYOUT ===== */
 .app-container {
   min-height: 100vh;
   display: flex;
@@ -321,7 +308,6 @@ body {
   overflow: hidden;
 }
 
-/* ===== SIDEBAR MENU ===== */
 .sidebar {
   width: 200px;
   background-color: #ffffff;
@@ -383,7 +369,6 @@ body {
   border-color: #f87171;
 }
 
-/* ===== ÁREAS DE CONTEÚDO ===== */
 .consultando-area {
   flex: 1;
   display: grid;
@@ -404,7 +389,6 @@ body {
   padding: 24px;
 }
 
-/* ===== TOTAIS - TABELAS ===== */
 .consulta-totais {
   display: flex;
   flex-direction: column;
@@ -479,7 +463,6 @@ body {
   font-weight: 500;
 }
 
-/* Totais finais */
 .totais-finais {
   padding: 12px;
   border-top: 2px solid #e5e7eb;
@@ -500,7 +483,6 @@ body {
   color: #111827;
 }
 
-/* ===== RESPONSIVIDADE ===== */
 @media (max-width: 1200px) {
   .consultando-area {
     grid-template-columns: 1fr;
