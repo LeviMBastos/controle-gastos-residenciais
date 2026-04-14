@@ -11,16 +11,3 @@ export const processarValorDinheiro = (input: string): number => {
   
   return parseInt(limpo) / 100;
 };
-
-export const tratarErroApi = (erro: any): string => {
-  if (erro.response?.data?.mensagem) {
-    return erro.response.data.mensagem;
-  }
-  if (erro.response?.data?.erro) {
-    return erro.response.data.erro;
-  }
-  if (erro.message) {
-    return erro.message;
-  }
-  return "Ocorreu um erro. Tente novamente.";
-};
