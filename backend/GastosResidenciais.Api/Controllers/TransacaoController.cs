@@ -24,7 +24,7 @@ public class TransacaoController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao listar transações.", erro = ex.Message });
+            return BadRequest(new { mensagem = ex.Message });
         }
     }
 
@@ -36,21 +36,9 @@ public class TransacaoController : ControllerBase
             await _transacaoBusiness.Salvar(transacao);
             return Created(string.Empty, new { mensagem = "Transação criada com sucesso." });
         }
-        catch (ArgumentNullException ex)
-        {
-            return BadRequest(new { mensagem = ex.Message });
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { mensagem = ex.Message });
-        }
-        catch (InvalidOperationException ex)
-        {
-            return BadRequest(new { mensagem = ex.Message });
-        }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new { mensagem = "Erro ao criar transação.", erro = ex.Message });
+            return BadRequest(new { mensagem = ex.Message });
         }
     }
 }
