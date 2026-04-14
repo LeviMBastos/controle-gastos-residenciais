@@ -29,6 +29,13 @@ public class PessoaRepository : IPessoaRepository
         return await _context.Pessoas.FirstOrDefaultAsync(pessoa => pessoa.Id == id);
     }
 
+    public async Task<Pessoa?> GetByIdComTransacoes(int id)
+    {
+        return await _context.Pessoas
+            .Include(pessoa => pessoa.Transacoes)
+            .FirstOrDefaultAsync(pessoa => pessoa.Id == id);
+    }
+
     public async Task Add(Pessoa pessoa)
     {
         await _context.Pessoas.AddAsync(pessoa);  

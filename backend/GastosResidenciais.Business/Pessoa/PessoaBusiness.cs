@@ -106,10 +106,13 @@ public class PessoaBusiness : IPessoaBusiness
         if (id <= 0)
             throw new ArgumentException("ID deve ser maior que zero.", nameof(id));
 
-        Pessoa? pessoa = await _pessoaRepository.GetById(id);
+        Pessoa? pessoa = await _pessoaRepository.GetByIdComTransacoes(id);
 
         if (pessoa == null)
             throw new InvalidOperationException($"Pessoa com ID {id} não encontrada.");
+
+        if (pessoa.Transacoes != null && pessoa.Transacoes.Count > 0)
+            throw new InvalidOperationException($"Não é possível deletar a pessoa '{pessoa.Nome}' pois existem {pessoa.Transacoes.Count} transação(ões) em seu nome.");
 
         await _pessoaRepository.Delete(pessoa);
     }
