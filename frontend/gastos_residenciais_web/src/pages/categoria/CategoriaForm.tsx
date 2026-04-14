@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { CategoriaDto } from "../../types";
 import { Finalidade } from "../../types/enums";
 import "../../App.css";
@@ -14,13 +14,45 @@ export const CategoriaForm = ({
   loading = false,
   initialData,
 }: CategoriaFormProps) => {
-  const [formData, setFormData] = useState<CategoriaDto>(
-    initialData || {
-      descricao: "",
-      finalidade: Finalidade.Ambas,
+  const normalizarFinalidade = (finalidade: string | number): Finalidade => {
+    if (typeof finalidade === "number") {
+      return finalidade as Finalidade;
     }
+
+    switch (finalidade.toLowerCase()) {
+      case "receita":
+        return Finalidade.Receita;
+      case "despesa":
+        return Finalidade.Despesa;
+      case "ambas":
+        return Finalidade.Ambas;
+      default:
+        return Finalidade.Ambas;
+    }
+  };
+
+  const [formData, setFormData] = useState<CategoriaDto>(
+    initialData
+      ? {
+          descricao: initialData.descricao,
+          finalidade: normalizarFinalidade(initialData.finalidade),
+        }
+      : {
+          descricao: "",
+          finalidade: Finalidade.Ambas,
+        }
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        descricao: initialData.descricao,
+        finalidade: normalizarFinalidade(initialData.finalidade),
+      });
+      setErrors({});
+    }
+  }, [initialData]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -28,7 +60,7 @@ export const CategoriaForm = ({
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "finalidade" ? parseInt(value) : value,
+      [name]: name === "finalidade" ? (parseInt(value) as Finalidade) : value,
     }));
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
@@ -93,14 +125,14 @@ export const CategoriaForm = ({
         <label className="label">Finalidade *</label>
         <select
           name="finalidade"
-          value={formData.finalidade}
+          value={formData.finalidade.toString()}
           onChange={handleChange}
           disabled={loading}
           className="input"
         >
-          <option value={Finalidade.Receita}>Receita</option>
-          <option value={Finalidade.Despesa}>Despesa</option>
-          <option value={Finalidade.Ambas}>Ambas</option>
+          <option value={Finalidade.Receita.toString()}>Receita</option>
+          <option value={Finalidade.Despesa.toString()}>Despesa</option>
+          <option value={Finalidade.Ambas.toString()}>Ambas</option>
         </select>
         {errors.finalidade && <span>{errors.finalidade}</span>}
       </div>

@@ -95,7 +95,10 @@ public class PessoaBusiness : IPessoaBusiness
         if (pessoaExistente == null)
             throw new InvalidOperationException($"Pessoa com ID {id} não encontrada.");
 
-        await _pessoaRepository.Update(Map(pessoa, id));
+        pessoaExistente.Nome = pessoa.Nome ?? string.Empty;
+        pessoaExistente.Idade = pessoa.Idade;
+
+        await _pessoaRepository.Update(pessoaExistente);
     }
 
     public async Task Deletar(int id)

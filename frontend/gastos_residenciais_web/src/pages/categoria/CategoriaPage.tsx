@@ -52,32 +52,6 @@ export const CategoriaPage = () => {
     }
   };
 
-  const handleEdit = (categoria: CategoriaPesquisaDto) => {
-    setEditingId(categoria.id);
-    setEditingData({
-      descricao: categoria.descricao,
-      finalidade: categoria.finalidade,
-    });
-  };
-
-  const handleDelete = async (id: number) => {
-    try {
-      setLoading(true);
-      setError(null);
-      await categoriaService.deletar(id);
-      await carregarCategorias();
-    } catch (err: any) {
-      setError(err.response?.data?.mensagem || "Erro ao deletar categoria");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCancelEdit = () => {
-    setEditingId(null);
-    setEditingData(null);
-  };
-
   return (
     <div className="page">
       <div className="page-content">
@@ -86,7 +60,9 @@ export const CategoriaPage = () => {
         {error && (
           <div className="alert alert-error">
             <span>{error}</span>
-            <button onClick={() => setError(null)}>X</button>
+            <button className="button-x" onClick={() => setError(null)}>
+              X
+            </button>
           </div>
         )}
 
@@ -96,19 +72,10 @@ export const CategoriaPage = () => {
           initialData={editingData || undefined}
         />
 
-        {editingId && (
-          <div className="alert alert-info">
-            <span>Editando categoria (ID: {editingId})</span>
-            <button onClick={handleCancelEdit}>Cancelar</button>
-          </div>
-        )}
-
         <h2 className="section-title">Categorias Cadastradas</h2>
 
         <CategoriaList
           categorias={categorias}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
           carregando={loading}
         />
       </div>

@@ -30,8 +30,6 @@ const obterNomeFinalidade = (finalidade: string | number): string => {
 
 export const CategoriaList = ({
   categorias,
-  onEdit,
-  onDelete,
   carregando = false,
 }: PropsListaCategoria) => {
   const colunas: Coluna<CategoriaPesquisaDto>[] = [
@@ -55,39 +53,11 @@ export const CategoriaList = ({
     },
   ];
 
-  const acoes: AcaoTabela<CategoriaPesquisaDto>[] = [];
-
-  if (onEdit) {
-    acoes.push({
-      rotulo: "Editar",
-      aoClicar: (categoria) => onEdit(categoria),
-      variante: "primario",
-    });
-  }
-
-  if (onDelete) {
-    acoes.push({
-      rotulo: "Deletar",
-      aoClicar: async (categoria) => {
-        if (
-          window.confirm("Tem certeza que deseja deletar esta categoria?")
-        ) {
-          try {
-            await onDelete(categoria.id);
-          } catch (erro) {
-            alert("Erro ao deletar categoria");
-          }
-        }
-      },
-      variante: "perigo",
-    });
-  }
-
   return (
     <Tabela
       dados={categorias}
       colunas={colunas}
-      acoes={acoes}
+      acoes={undefined}
       carregando={carregando}
       mensagemVazia="Nenhuma categoria cadastrada ainda."
       chaveLinhas="id"

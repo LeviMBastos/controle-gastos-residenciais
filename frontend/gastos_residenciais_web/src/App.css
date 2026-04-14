@@ -150,6 +150,17 @@ body {
   cursor: not-allowed;
 }
 
+.button-x {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 10px;
+  font-size: 0.95rem;
+}
+
 /* Alertas */
 .alert {
   padding: 12px;

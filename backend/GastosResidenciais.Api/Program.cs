@@ -7,8 +7,6 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -25,7 +23,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
 builder.Services.AddScoped<IPessoaRepository, PessoaRepository>();

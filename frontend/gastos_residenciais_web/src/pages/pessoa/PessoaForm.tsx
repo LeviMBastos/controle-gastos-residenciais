@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { PessoaDto } from "../../types";
 import "../../App.css";
 
@@ -20,6 +20,19 @@ export const PessoaForm = ({
     },
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
+      setErrors({});
+    } else {
+      setFormData({
+        nome: "",
+        idade: 0,
+      });
+      setErrors({});
+    }
+  }, [initialData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

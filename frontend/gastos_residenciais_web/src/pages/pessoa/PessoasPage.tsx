@@ -84,7 +84,9 @@ export const PessoasPage = () => {
         {error && (
           <div className="alert alert-error">
             <span>{error}</span>
-            <button onClick={() => setError(null)}>X</button>
+            <button className="button-x" onClick={() => setError(null)}>
+              X
+            </button>
           </div>
         )}
 
@@ -97,7 +99,9 @@ export const PessoasPage = () => {
         {editingId && (
           <div className="alert alert-info">
             <span>Editando pessoa (ID: {editingId})</span>
-            <button onClick={handleCancelEdit}>Cancelar</button>
+            <button className="button-x" onClick={handleCancelEdit}>
+              Cancelar
+            </button>
           </div>
         )}
 
